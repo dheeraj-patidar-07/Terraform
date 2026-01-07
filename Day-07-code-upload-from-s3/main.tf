@@ -1,3 +1,19 @@
+resource "aws_s3_bucket" "name" {
+  bucket = "dheerajptdrtest"
+  tags = {
+    Name = "Dheeraj"
+    Environment ="dev"
+  }
+  
+}
+
+resource "aws_s3_object" "lambda_zip" {
+    bucket = aws_s3_bucket.name.bucket
+    key = "lambda/lambda.zip"
+    source = "lambda.zip"           # upload local ZIP to S3
+
+    etag = filemd5("lambda.zip")    # re-uploads when file changes
+}
 
 resource "aws_iam_role" "lambda_role" {
   name = "lambda_execution_role"
